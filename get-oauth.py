@@ -22,6 +22,7 @@ if __name__ == "__main__":
 
     if not args.c:
         parser.print_help()
+        exit(1)
 
     config = configparser.ConfigParser()
     config.read(args.c)
@@ -38,32 +39,31 @@ if __name__ == "__main__":
             CLIENT_SECRET=<client secret here>
 
         """)
-        exit(0)
+        exit(1)
 
     server = oauth2.OAuth2Server(creds['client_id'], creds['client_secret'])
     server.browser_authorize()
 
-    access_token = str(
+    creds['access_token'] = str(
         server.fitbit.client.session.token['access_token'])
-    refresh_token = str(
+    creds['refresh_token'] = str(
         server.fitbit.client.session.token['refresh_token'])
-    expires_at = str(server.fitbit.client.session.token['expires_at'])
+    creds['expires_at'] = str(server.fitbit.client.session.token['expires_at'])
 
-    print(""" 
+    print("""
         Your Oauth Info:
 
         Access Token: {access}
-        
+
         Refresh Token: {refresh}
         Expires at: {expire}
 
 
         Writing these to your config because I'm nice :)
 
-    """.format(access=access_token, refresh=refresh_token, expire=expires_at))
+    """.format(access=creds['access_token'], refresh=creds['refresh_token'], expire=creds['expires_at']))
 
-    config[section] = {'access_token': access_token,
-                       'refresh_token': refresh_token,
-                       'expires_at': expires_at}
+    for k, v in creds.items():
+        config.set(section, k, v)
     with open(args.c, 'w') as cfgFile:
         config.write(cfgFile)

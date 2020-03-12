@@ -16,13 +16,19 @@ information and push it to an MQTT-connected host
 
 Your configuration file must have the following categories:
 
-\[Fitbit]
-client_id=id
-client_secret=secret
-\[AMQ]
-output_topic=helloWorld
-host=broker location
-port=broker port
+```
+[Fitbit]
+    client_id=id
+    client_secret=secret
+[MQTT]
+    output_topic=helloWorld
+    host=broker location
+    port=broker port
+```
+
+Optionally, you can add your access token (access_token), refresh token
+(refresh_token), and expiration (expires_at), or you can let the
+get-oauth.py script do it for you. See the section below...
 
 ### Useful scripts
 

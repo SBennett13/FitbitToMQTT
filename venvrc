@@ -1,0 +1,10 @@
+# rc file for launching virtual environments
+
+if [[ -e ~/.bash_profile ]]; then
+    source ~/.bash_profile
+fi
+if [[ -e ~/.bashrc ]]; then
+    source ~/.bashrc
+fi
+
+source ./env/bin/activate

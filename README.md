@@ -9,7 +9,17 @@ for fitness information and push it to an MQTT-connected host
 
 ### Configuration
 
-Your configuration file must have the following categories:
+1. You will need to sign in at the [Fitbit Developers Page](https://dev.fitbit.com/).
+
+Once you have an account, go to "Manage" -> "Register An App" and create a new app.
+The only requirements are:
+
+-   Oauth 2.0 Application Type: Personal
+-   Callback URL: http://127.0.0.1:8080/
+
+You'll need the resulting client ID and client secret for the next step.
+
+2. Your configuration file must have the following categories:
 
 ```
 [Fitbit]

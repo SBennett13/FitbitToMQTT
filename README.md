@@ -8,5 +8,24 @@ Use Orcas Python module for Fitbit with Paho's MQTT module to poll for fitness
 information and push it to an MQTT-connected host
 
 #### Requirements
-- Orcas python-fitbit
-- paho-mqtt
+
+-   Orcas python-fitbit
+-   paho-mqtt
+
+### Configuration
+
+Your configuration file must have the following categories:
+
+\[Fitbit]
+client_id=id
+client_secret=secret
+\[AMQ]
+output_topic=helloWorld
+host=broker location
+port=broker port
+
+### Useful scripts
+
+-   get-oauth.py : get access token, refresh token, and expires at for
+    the provided client id and secret. Run with -c argument as the path
+    to your config.cfg

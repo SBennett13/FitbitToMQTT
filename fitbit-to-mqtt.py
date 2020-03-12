@@ -41,19 +41,19 @@ class FitbitToMqtt():
 
         section = 'Fitbit'
         try:
-            self.client_id = config[section].get('CLIENT_ID')
-            self.client_secret = config[section].get('CLIENT_SECRET')
-            self.access_token = config[section].get('ACCESS_TOKEN')
-            self.refresh_token = config[section].get('REFRESH_TOKEN')
-            self.expires_at = float(config[section].get('EXPIRES_AT'))
+            self.client_id = config[section].get('client_id')
+            self.client_secret = config[section].get('client_secret')
+            self.access_token = config[section].get('access_token')
+            self.refresh_token = config[section].get('refresh_token')
+            self.expires_at = float(config[section].get('expires_at'))
         except Exception:
             print('Error getting Fitbit config')
             success = False
         section = 'MQTT'
         try:
-            self.output_topic = config[section].get('OUTPUT_TOPIC')
-            self.host = config[section].get('HOST')
-            self.port = int(config[section].get('PORT'))
+            self.output_topic = config[section].get('output_topic')
+            self.host = config[section].get('host')
+            self.port = int(config[section].get('port'))
         except Exception:
             print('Error getting MQTT config')
             success = False
@@ -94,26 +94,6 @@ class FitbitToMqtt():
                                           refresh_token=self.refresh_token, refresh_cb=self.on_refresh, expires_at=self.expires_at, oauth2=True)
         return True
 
-    def getOauth(self):
-        server = Oauth2.OAuth2Server(self.client_id, self.client_secret)
-        server.browser_authorize()
-
-        self.access_token = str(
-            server.fitbit.client.session.token['access_token'])
-        self.refresh_token = str(
-            server.fitbit.client.session.token['refresh_token'])
-        self.expires_at = str(server.fitbit.client.session.token['expires_at'])
-
-        if (self.debug):
-            print("Access Token: %s" % self.access_token)
-            print("Refresh Token: %s" % self.refresh_token)
-            print("Expires at: %s" % self.expires_at)
-
-        if self.access_token and self.refresh_token:
-            return True
-        else:
-            return False
-
     def init(self):
         success1 = self.initMQTT()
         success2 = self.initFitbit()
@@ -136,20 +116,10 @@ class FitbitToMqtt():
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        '--config', help='Config file to use for the client', type=str, default="./config/config.cfg")
+        '--config', dest='c', help='Config file to use for the client', type=str, default="./config/config.cfg")
     parser.add_argument(
-        '--debug', help='Enable debug print', action="store_true")
-    parser.add_argument(
-        '--get-oauth', help='Retrieve Oauth keys, Prints to STDOUT', action='store_true')
+        '--debug', help='Enable debug print', dest="d", default=False, action="store_true")
     args = parser.parse_args()
 
-    if args.get_oauth:
-        FitbitToMqtt(args.config, getOauth=True, debug=True)
-        exit(0)
-
-    test = None
-    if args.debug:
-        test = FitbitToMqtt(args.config, True)
-    else:
-        test = FitbitToMqtt(args.config)
+    test = FitbitToMqtt(args.c, args.d)
     test.run()

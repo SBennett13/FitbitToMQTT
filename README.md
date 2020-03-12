@@ -37,6 +37,10 @@ get-oauth.py script do it for you. See the section below...
 
 ### Useful scripts
 
+-   setup.sh : Run this directly after cloning your repo. It will create
+    a python virtual environment (venv), install the dependencies, and start the
+    venv.
+
 -   get-oauth.py : get access token, refresh token, and expires at for
     the provided client id and secret. Run with -c argument as the path
     to your config.cfg
